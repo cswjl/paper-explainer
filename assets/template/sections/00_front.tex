@@ -1,0 +1,43 @@
+% Cover, info table, reading guide, table of contents. Fixed text switches with \zhtrue/\zhfalse in main.tex.
+\thispagestyle{plain}
+\begin{center}
+  {\LARGE\sffamily\bfseries\color{headfg} \ExplainerTitle}\\[6pt]
+  {\Large\sffamily\color{headfg} \zhen{论文详解}{An explainer}}\\[8pt]
+  \ifzh{\large \PaperTitle}\\[5pt]\fi
+  {\normalsize \PaperAuthorsShort\quad \PaperVenue}\\[3pt]
+  {\small\color{inksec} \zhen{中文讲解\quad 整理日期}{Prepared} \MadeDate}
+\end{center}
+\vspace{2pt}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}>{\sffamily\bfseries}p{\zhen{4.6em}{5.4em}}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\zhen{题目}{Title} & \PaperTitle \\
+\zhen{作者}{Authors} & \FILL{every author with their affiliation in parentheses, e.g. Jeff Z.\ HaoChen (Stanford University)}\\
+\zhen{发表}{Venue} & \FILL{full name and edition of the conference or journal, location or virtual, proceedings volume and pages; oral or spotlight only if verified on the venue's site}\\
+\zhen{预印本}{Preprint} & \FILL{arXiv ID; v1 submission date; latest version and its date}\\
+\zhen{依据}{Basis} & \FILL{the version explained, and the pages of its main text, references and appendices}\zhen{；与正式版的差异见~\ref{app:versions}}{; differences from the formal version in~\ref{app:versions}}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{sumbox}[\zhen{阅读说明}{How to read this}]
+\zhen{\textbf{读者。}假设你有计算机本科的基础；本科课程不教的工具，在第一次用到时讲清。读完这份讲解，不必再打开原文。}{\textbf{Reader.} You are assumed to have a CS undergraduate background; tools that undergraduate courses don't teach are explained where they are first used. After reading this explainer you don't need to open the paper.}
+
+\smallskip
+\zhen{\textbf{两种读法。}只读第一部分：第~\ref{sec:plain} 节不用公式讲完整篇论文，后面各节给出全部结果的准确陈述、含义和实验，第~\ref{sec:overview} 节是速查表。要核对每一步推导，再读第二部分的完整证明。}{\textbf{Two ways to read.} Read only Part~I: Section~\ref{sec:plain} tells the whole paper without formulas, the following sections give the exact statement, meaning and experiments of every result, and Section~\ref{sec:overview} is a lookup table. To check every step of the derivations, also read the complete proofs in Part~II.}
+
+\smallskip
+\zhen{\textbf{框的含义。}\textcolor{thmfg}{\textbf{蓝框}}（定理、引理、假设）和\textcolor{deffg}{\textbf{青框}}（定义）是原文的陈述，编号同原文 \PaperVersion，只改正了~\ref{app:errata} 列出的笔误。\textcolor{notefg}{\textbf{橙框}}是我补充的解释和评价，\textcolor{chkfg}{\textbf{绿框}}是我算的例子和验算，数字都由脚本核对。无框的正文是我按思路重新组织的论文内容，不是逐句翻译。}{\textbf{What the boxes mean.} \textcolor{thmfg}{\textbf{Blue boxes}} (theorems, lemmas, assumptions) and \textcolor{deffg}{\textbf{teal boxes}} (definitions) are the paper's statements, numbered as in \PaperVersion, with only the typos listed in~\ref{app:errata} corrected. \textcolor{notefg}{\textbf{Orange boxes}} are my explanations and assessments, and \textcolor{chkfg}{\textbf{green boxes}} are examples and checks I computed, every number checked by a script. Unboxed text is the paper's content, reorganized by me along the argument rather than retold sentence by sentence.}
+
+\smallskip
+\zhen{\textbf{编号。}公式右边标“(原文 6)”的，就是原文编号为 6 的公式；正文里蓝色的式号可以点击，跳到讲解里展示这个公式的地方。“原文图 N”是原图，“原文表 N”是重排过的原表；有编号的插图是本讲解自己画的。}{\textbf{Numbering.} A formula tagged ``(paper 6)'' on the right is the one numbered (6) in the paper; blue equation numbers in the text are links to where this explainer displays that formula. ``Paper Figure N'' is the paper's original figure and ``Paper Table N'' its table, retyped; numbered diagrams are this explainer's own.}
+\end{sumbox}
+
+% Tighter table-of-contents entries; no page break after it, Part I starts right away
+\begingroup
+\let\origaddvspace\addvspace
+\renewcommand{\addvspace}[1]{\origaddvspace{0.5em}}
+\tableofcontents
+\endgroup

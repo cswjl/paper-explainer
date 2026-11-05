@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+# LaTeX build leftovers (build.py compiles in a separate folder, but just in case)
+*.aux
+*.log
+*.out
+*.toc
+*.xdv
+*.synctex.gz
+
+.DS_Store
+Thumbs.db

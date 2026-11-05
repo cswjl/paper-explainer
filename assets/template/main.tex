@@ -1,0 +1,203 @@
+% !TEX program = xelatex
+% Build: xelatex main.tex, 3 runs (table of contents and cross-references).
+% Auxiliary files are written next to the sources, so build a copy elsewhere (build.py does) and keep this folder clean.
+% Fonts: Latin Modern for Western text, Fandol (bundled with TeX Live) for Chinese; nothing to install.
+
+% ======== Language of the explainer: \zhtrue for Chinese, \zhfalse for English ========
+\newif\ifzh
+\zhtrue
+% ======================================================================================
+% Chinese uses ctexart's Chinese typesetting; English uses the same class with scheme=plain,
+% i.e. standard LaTeX typesetting that can still show Chinese characters if needed.
+\ifzh
+  \documentclass[11pt,a4paper,fontset=fandol]{ctexart}
+\else
+  \documentclass[11pt,a4paper,fontset=fandol,scheme=plain]{ctexart}
+\fi
+% \zhen{Chinese}{English} picks the text for the explainer's language. Every fixed label of the
+% template goes through it, so switching \zhtrue/\zhfalse above is all a new explainer needs.
+\newcommand{\zhen}[2]{\ifzh#1\else#2\fi}
+% Placeholder: shown in red until replaced; check_tex.py reports every one left.
+\newcommand{\FILL}[1]{\texorpdfstring{\textcolor{red}{[FILL: #1]}}{[FILL: #1]}}
+
+% ======== Per-paper settings ========
+\newcommand{\PaperTitle}{\FILL{the paper's title, as published}}
+\newcommand{\ExplainerTitle}{\FILL{the title in the explainer's language: a Chinese translation, or the paper's title for English}}
+\newcommand{\PaperAuthorsShort}{\FILL{authors' surnames, comma-separated}}
+\newcommand{\PaperVenue}{\FILL{venue and year, e.g. NeurIPS 2021}}
+\newcommand{\PaperVersion}{\FILL{the version explained, e.g. arXiv v7}}
+\newcommand{\PaperHeader}{\FILL{running header, e.g. HaoChen et al.\ (2021)}}
+\newcommand{\MadeDate}{\FILL{date YYYY-MM-DD}}
+% ====================================
+
+\usepackage[top=2.6cm,bottom=2.4cm,left=2.7cm,right=2.7cm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{xcolor}
+\usepackage{booktabs,array,tabularx,multirow,longtable}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,decorations.pathreplacing,shapes.geometric}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage{caption}
+\captionsetup{font=small,labelfont={sf,bf}}
+
+% ---------- Colours ----------
+\definecolor{headfg}{HTML}{17365D}
+\definecolor{linkblue}{HTML}{1F4E9E}
+\definecolor{thmfg}{HTML}{1F4E79}  \definecolor{thmbg}{HTML}{EEF4FA}
+\definecolor{deffg}{HTML}{0B6E6E}  \definecolor{defbg}{HTML}{EAF6F5}
+\definecolor{notefg}{HTML}{9A5B00} \definecolor{notebg}{HTML}{FFF6E5}
+\definecolor{chkfg}{HTML}{2E6B2E}  \definecolor{chkbg}{HTML}{EEF7EC}
+\definecolor{sumfg}{HTML}{3F3F3F}  \definecolor{sumbg}{HTML}{F2F2F0}
+% Chart colours (checked for colour-blind separability; use them in order, don't skip any)
+\definecolor{ser1}{HTML}{2A78D6} % blue
+\definecolor{ser2}{HTML}{EB6834} % orange
+\definecolor{ser3}{HTML}{1BAF7A} % teal green
+\definecolor{ser4}{HTML}{EDA100} % yellow
+\definecolor{ser5}{HTML}{E87BA4} % magenta
+\definecolor{ser6}{HTML}{008300} % green
+\definecolor{inkmain}{HTML}{0B0B0B}
+\definecolor{inksec}{HTML}{52514E}
+\definecolor{inkgrid}{HTML}{E1E0D9}
+\definecolor{inkaxis}{HTML}{C3C2B7}
+
+\usepackage[colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+  bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=1]{hyperref}
+\hypersetup{
+  pdftitle={\ExplainerTitle\zhen{——论文详解}{: an explainer}},
+  pdfauthor={\zhen{讲解整理：Claude；原论文作者 }{Explainer by Claude; paper by }\PaperAuthorsShort},
+  pdfsubject={\PaperTitle\space(\PaperVenue)},
+}
+
+% ---------- Headings and layout ----------
+\ctexset{
+  section={format=\Large\sffamily\bfseries\color{headfg}\raggedright,
+           beforeskip=20pt,afterskip=10pt},
+  subsection={format=\large\sffamily\bfseries\color{headfg}\raggedright,
+           beforeskip=14pt,afterskip=6pt},
+  subsubsection={format=\normalsize\sffamily\bfseries\color{headfg}\raggedright,
+           beforeskip=10pt,afterskip=4pt},
+}
+% The explainer's own figures are numbered (插图 N / Diagram N); the paper's figures are captioned
+% 原文图 N / Paper Figure N with \caption* and take no number.
+\ctexset{figurename={\zhen{插图}{Diagram}}}
+\ctexset{part={format=\LARGE\sffamily\bfseries\color{headfg}\centering,beforeskip=22pt,afterskip=12pt}}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=2em}
+\numberwithin{equation}{section}
+\allowdisplaybreaks[3]
+\setlength{\emergencystretch}{2em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{inksec}\PaperHeader\ \zhen{论文详解}{explained}}
+\fancyhead[R]{\small\color{inksec}\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\color{inksec}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+% ctex's \partmark empties the header; show the part's title instead until the next section
+\renewcommand{\partmark}[1]{\markboth{#1}{}}
+
+% ---------- Five content boxes: the colour shows where the content comes from ----------
+\tcbset{
+  boxbase/.style={enhanced jigsaw,breakable,frame hidden,sharp corners,
+    left=9pt,right=8pt,top=6pt,bottom=6pt,before skip=9pt,after skip=9pt,
+    parbox=false},
+}
+\newcommand{\boxhead}[2]{\noindent\textcolor{#1}{\sffamily\bfseries #2}\par\smallskip}
+% The paper's content: theorems, lemmas, propositions, corollaries, claims, assumptions
+\newtcolorbox{thmbox}[1]{boxbase,colback=thmbg,borderline west={2.6pt}{0pt}{thmfg},
+  before upper={\boxhead{thmfg}{#1}}}
+% The paper's content: definitions
+\newtcolorbox{defbox}[1]{boxbase,colback=defbg,borderline west={2.6pt}{0pt}{deffg},
+  before upper={\boxhead{deffg}{#1}}}
+% The explainer's addition: explanations, connections and assessments (not in the paper)
+\newtcolorbox{notebox}[1][\zhen{讲解注}{Explainer's note}]{boxbase,colback=notebg,borderline west={2.6pt}{0pt}{notefg},
+  before upper={\boxhead{notefg}{#1}}}
+% The explainer's addition: examples and numbers I computed (not in the paper; every number checked by a script)
+\newtcolorbox{checkbox}[1][\zhen{验算}{Check}]{boxbase,colback=chkbg,borderline west={2.6pt}{0pt}{chkfg},
+  before upper={\boxhead{chkfg}{#1}}}
+% Reading guide; only a very long section ends with one listing its points
+\newtcolorbox{sumbox}[1][\zhen{小结}{Summary}]{boxbase,colback=sumbg,borderline west={2.6pt}{0pt}{sumfg},
+  before upper={\boxhead{sumfg}{#1}}}
+\newcommand{\proofhead}[1]{\par\medskip\noindent{\sffamily\bfseries\color{headfg}#1}\quad}
+% One plain-words sentence right after a theorem box
+\newcommand{\plainsay}[1]{\par\smallskip\noindent{\sffamily\bfseries\color{headfg}\zhen{用大白话说：}{In plain words: }}#1\par\smallskip}
+\newcommand{\qedsym}{\hfill$\square$}
+
+% ---------- General notation ----------
+% A paper equation number: \ptag{6} shows "(原文 6)" / "(paper 6)" and creates the link target eq:o6
+\newcommand{\ptag}[1]{\tag{\zhen{原文}{paper} #1}\label{eq:o#1}}
+% Citing a paper equation: 式~\peq{6} / Eq.~\peq{6} shows "式 (6)" / "Eq. (6)", and (6) links to where the explainer displays it
+\newcommand{\peq}[1]{\hyperref[eq:o#1]{(#1)}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\tp}{^{\top}}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\Otil}{\widetilde{O}}
+\newcommand{\poly}{\mathrm{poly}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+
+% ---------- This paper's own notation ----------
+% e.g. \newcommand{\Loss}{\mathcal{L}}
+
+% ---------- Chart styles ----------
+\pgfplotsset{
+  cleanplot/.style={
+    axis line style={inkaxis,line width=0.6pt},
+    tick style={inkaxis,line width=0.4pt},
+    grid=major,major grid style={inkgrid,line width=0.4pt},
+    every tick label/.append style={font=\footnotesize,color=inksec},
+    label style={font=\small,color=inksec},
+    title style={font=\small,color=inkmain},
+    legend style={font=\footnotesize,draw=none,fill=white,fill opacity=0.9,text opacity=1,
+      row sep=-1pt,inner sep=2pt},
+    legend cell align=left,
+    tick align=outside,
+    axis x line*=bottom,axis y line*=left,
+  },
+  serA/.style={ser1,line width=1.2pt,mark=*,mark size=1.9pt,mark options={solid,draw=white,line width=0.4pt,fill=ser1}},
+  serB/.style={ser2,line width=1.2pt,mark=square*,mark size=1.7pt,mark options={solid,draw=white,line width=0.4pt,fill=ser2}},
+  serC/.style={ser3,line width=1.2pt,mark=triangle*,mark size=2.4pt,mark options={solid,draw=white,line width=0.4pt,fill=ser3}},
+  serD/.style={ser4,line width=1.2pt,mark=diamond*,mark size=2.5pt,mark options={solid,draw=white,line width=0.4pt,fill=ser4}},
+  serE/.style={ser5,line width=1.2pt,mark=pentagon*,mark size=2.3pt,mark options={solid,draw=white,line width=0.4pt,fill=ser5}},
+  serF/.style={ser6,line width=1.2pt,mark=square*,mark size=1.7pt,mark options={solid,rotate=45,draw=white,line width=0.4pt,fill=ser6}},
+}
+
+\begin{document}
+
+\input{sections/00_front}
+
+\part{\zhen{轻松读懂这篇论文}{Understanding the paper}}
+\input{sections/01_plain}
+% Add in order: 02_prelim (omit if not needed), 03_setup, the main results, experiments, discussion (related work, conclusions and assessment)
+\input{sections/overview}
+
+% Parts don't force page breaks, to avoid big blank areas.
+% Theory papers keep the "complete proofs" title and intro below; experiment-driven papers use the "full details" pair instead.
+\part{\zhen{完整证明（第一次读可以跳过）}{Complete proofs (skip on first reading)}}
+\zhen{全部证明都在这里，补全了原文省略的非平凡步骤。原文的笔误直接改正，改了什么见~\ref{app:errata}。}{Every proof is here, with the non-trivial steps the paper omits filled in. Typos in the paper are corrected in place; \ref{app:errata} lists what was changed.}
+% \part{\zhen{完整细节（第一次读可以跳过）}{Full details (skip on first reading)}}
+% \zhen{全部推导和实验细节都在这里，补全了原文省略的步骤。原文的笔误直接改正，改了什么见~\ref{app:errata}。}{Every derivation and experimental detail is here, with the steps the paper omits filled in. Typos in the paper are corrected in place; \ref{app:errata} lists what was changed.}
+% Then add one section per paper appendix, in order.
+
+\part{\zhen{附录}{Appendices}}
+\input{sections/appendix}
+
+\end{document}

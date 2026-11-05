@@ -1,0 +1,78 @@
+% The explainer's own appendices, numbered E1, E2, E3 (Chinese: 附 1, 附 2, 附 3) so they aren't
+% confused with the paper's Appendices A, B, C.
+\appendix
+\ctexset{section/number={\zhen{附}{E}\arabic{section}}}
+
+\section{\FILL{a title naming the versions compared, e.g. \zhen{arXiv v7 与 NeurIPS 正式版的差异}{Differences between arXiv v7 and the NeurIPS version}}}\label{app:versions}
+
+\FILL{one sentence naming the two versions compared: the latest preprint version with its date, and the formal version with its venue and where it and its supplement came from (older preprint versions are not compared). The table lists only substantive differences; delete it if there is no formal version or the two differ only in layout and wording.}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.44\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+\textbf{\zhen{项目}{Item}} & \textbf{\FILL{latest preprint, e.g. arXiv v7}} & \textbf{\FILL{formal version, e.g. NeurIPS 2021}} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\zhen{项目}{Item}} & \textbf{\FILL{latest preprint, e.g. arXiv v7}} & \textbf{\FILL{formal version, e.g. NeurIPS 2021}\zhen{（续）}{ (cont.)}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\zhen{篇幅}{Length} & \FILL{pages} & \FILL{pages} \\
+\end{longtable}
+\endgroup
+
+\section{\zhen{原文的错误与一致性检查}{Errors and consistency checks in the paper}}\label{app:errata}
+
+\FILL{two or three sentences: whether these problems shake the main conclusions; the category of each entry (conditions or constants, missing steps, substantive gaps, wording and notation); that they were independently reviewed}
+
+% Each entry gives the problem, the correction and how it was verified, and ends with the scope of the impact;
+% compact, no reasoning. Ordered by severity.
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.04\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.79\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+ & \textbf{\zhen{位置}{Location}} & \textbf{\zhen{问题}{Problem}} \\
+\midrule
+\endfirsthead
+\toprule
+ & \textbf{\zhen{位置}{Location}} & \textbf{\zhen{问题（续）}{Problem (cont.)}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+1 & \FILL{location} & \FILL{problem; correction; how it was verified; scope} \\
+\end{longtable}
+\endgroup
+
+\paragraph{\zhen{核对过没有问题的部分。}{Parts checked and found correct.}}\FILL{the main results verified by script with no problem found}
+
+\section{\zhen{原文参考文献及其作用}{The paper's references and their roles}}\label{app:refs}
+
+\FILL{all N references of the version explained. Those whose results, methods, data or code the paper uses get one row each, in the paper's order; those only listed in batches in the introduction or related work are grouped by role at the end. Mark those new relative to the formal version.}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.22}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{27.5em}>{\raggedright\arraybackslash}p{13.5em}@{}}
+\toprule
+\textbf{\zhen{文献}{Reference}} & \textbf{\zhen{在文中的作用}{Role in the paper}} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\zhen{文献}{Reference}} & \textbf{\zhen{在文中的作用（续）}{Role in the paper (cont.)}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\FILL{reference} & \FILL{role} \\
+% References cited only in batches go below this rule, one row per group; delete the rule and heading if there are none.
+\midrule
+\multicolumn{2}{@{}l@{}}{\textbf{\zhen{只在引言和相关工作里成批列举的文献，按作用分组}{Cited only in batches in the introduction or related work, grouped by role}}} \\
+\FILL{the group's references: authors, year, and what each is} & \FILL{the group's role} \\
+\end{longtable}
+\endgroup

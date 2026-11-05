@@ -1,0 +1,53 @@
+\section{\zhen{全部结果速查}{All results at a glance}}\label{sec:overview}
+
+\zhen{这一节只供查找，不含新内容。}{This section is for looking things up; it contains nothing new.}
+
+% Experiment-driven papers: replace "All main results" with a method-components table
+% (component | role | formula or algorithm | where in the explainer) and delete "Relations between results".
+\subsection{\zhen{所有主要结果}{All main results}}
+
+% The statement column uses the corrected form (as in E2 / 附 2). For a conclusion that is the explainer's own,
+% write "(explainer's note)" / "（讲解注）" in the first column.
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.5\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.37\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+\textbf{\zhen{结果}{Result}} & \textbf{\zhen{内容}{Statement}} & \textbf{\zhen{含义}{Meaning}} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\zhen{结果}{Result}} & \textbf{\zhen{内容}{Statement}} & \textbf{\zhen{含义（续）}{Meaning (cont.)}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\FILL{one row per result} & & \\
+\end{longtable}
+\endgroup
+
+\subsection{\zhen{结果之间的关系}{Relations between results}}
+
+% Keep only when there are many results (6 or more) with non-trivial dependencies; otherwise delete this subsection.
+% TikZ dependency graph: arrows from the lemma used to the theorem that uses it; Part I and Part II results separated by a dashed line.
+\FILL{dependency graph}
+
+\subsection{\zhen{符号速查}{Notation}}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.3\linewidth}>{\raggedright\arraybackslash}p{\dimexpr0.7\linewidth-2\tabcolsep\relax}@{}}
+\toprule
+\textbf{\zhen{符号}{Symbol}} & \textbf{\zhen{含义（首次出现）}{Meaning (first appearance)}} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{\zhen{符号}{Symbol}} & \textbf{\zhen{含义（首次出现）（续）}{Meaning (first appearance, cont.)}} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\FILL{one row per symbol} & \\
+\end{longtable}
+\endgroup
