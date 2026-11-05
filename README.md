@@ -1,6 +1,6 @@
 # paper-explainer
 
-**English** | 简体中文
+**English** | [简体中文](README.zh-CN.md)
 
 A Claude Code / Codex skill that turns an academic paper into a complete, concise explainer PDF, typeset with XeLaTeX, in Chinese or English. A reader with a CS undergraduate background can master every theorem, proof and experimental number in the paper without opening it. 
 
@@ -140,7 +140,3 @@ The scripts also work on their own; each prints its usage with `--help`.
 - A full run is long: many tool calls, several compiles and a review subagent. Longer papers take more time and tokens.
 - Downloads are treated as untrusted: each goes into its own folder, Python that reads them runs in isolated mode (`-I` or `-P`), EPS files are never converted, and the authors' code is never executed.
 - In Claude Code / Codex, the independent review uses a Claude / Codex subagent; no other model or API key is needed.
-
-## License
-
-MIT

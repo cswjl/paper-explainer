@@ -1,6 +1,6 @@
 # paper-explainer
 
-English | **简体中文**
+[English](README.md) | **简体中文**
 
 一个 Claude Code / Codex skill：把一篇学术论文写成一份完整、简洁的讲解 PDF，用 XeLaTeX 排版，中文、英文都可以。有计算机本科基础的读者不用打开原文，就能掌握论文里的每个定理、每个证明和每个实验数字。
 
@@ -140,7 +140,3 @@ docs/images/                上面的示例图
 - 完整跑一遍耗时较长：要调用很多次工具、编译多次，还有一个复核用的 subagent。论文越长，花的时间和 token 越多。
 - 下载的文件一律当作不可信：每个下载放进单独的目录，读取它们的 Python 以隔离模式运行（`-I` 或 `-P`），不转换 EPS 文件，也不运行作者的代码。
 - 在 Claude Code / Codex 里，独立复核用的是 Claude / Codex subagent，不需要其他模型或 API key。
-
-## 许可证
-
-MIT
