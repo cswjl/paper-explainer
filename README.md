@@ -1,8 +1,8 @@
 # paper-explainer
 
-**English** | [简体中文](README.zh-CN.md)
+**English** | 简体中文
 
-A [Claude Code](https://claude.com/claude-code) skill that turns an academic paper into a complete, concise explainer PDF, typeset with XeLaTeX, in Chinese or English. A reader with a CS undergraduate background can master every theorem, proof and experimental number in the paper without opening it. The skill also works in OpenAI Codex.
+A Claude Code / Codex skill that turns an academic paper into a complete, concise explainer PDF, typeset with XeLaTeX, in Chinese or English. A reader with a CS undergraduate background can master every theorem, proof and experimental number in the paper without opening it. 
 
 ![Six pages of an example explainer](docs/images/example-en.png)
 
@@ -27,9 +27,9 @@ Box colours show where the content comes from: blue and teal boxes hold the pape
 
 ## Requirements
 
-- [Claude Code](https://claude.com/claude-code) or OpenAI Codex
-- [TeX Live](https://tug.org/texlive/) with `xelatex`. Chinese text uses the Fandol fonts bundled with TeX Live, so no fonts need installing.
-- Python 3.10 or later, with [PyMuPDF](https://pymupdf.readthedocs.io/) and [Pillow](https://python-pillow.org/):
+- Claude Code or OpenAI Codex
+- TeX Live with `xelatex`. Chinese text uses the Fandol fonts bundled with TeX Live, so no fonts need installing.
+- Python 3.10 or later, with PyMuPDF and Pillow:
 
   ```bash
   python -m pip install pymupdf pillow
@@ -41,7 +41,13 @@ Developed on Windows 11 with TeX Live 2026, Python 3.13, PyMuPDF 2.0 and Pillow 
 
 ## Installation
 
-Clone the repository into your personal skills folder, so that the skill is available in every project:
+The easiest way is to ask your AI agent to install it for you, for example by telling Claude Code or Codex:
+
+```text
+Install the paper-explainer skill from https://github.com/cswjl/paper-explainer
+```
+
+To install it by hand, clone the repository into your personal skills folder, so that the skill is available in every project:
 
 ```bash
 git clone https://github.com/cswjl/paper-explainer.git ~/.claude/skills/paper-explainer
@@ -55,7 +61,7 @@ git clone https://github.com/cswjl/paper-explainer.git "$env:USERPROFILE\.claude
 
 To use it in one project only, clone it into that project's `.claude/skills/paper-explainer` instead. Run `git pull` in the folder to update.
 
-For [Codex](https://developers.openai.com/codex/skills), clone it into `~/.agents/skills/paper-explainer`, the folder where Codex looks for personal skills (in PowerShell, `"$env:USERPROFILE\.agents\skills\paper-explainer"`):
+For Codex, clone it into `~/.agents/skills/paper-explainer`, the folder where Codex looks for personal skills (in PowerShell, `"$env:USERPROFILE\.agents\skills\paper-explainer"`):
 
 ```bash
 git clone https://github.com/cswjl/paper-explainer.git ~/.agents/skills/paper-explainer
@@ -68,11 +74,11 @@ If a running session doesn't list the skill, start a new one.
 Ask in your own words, giving an arXiv link or ID, a title, or a local PDF:
 
 ```text
-Explain this paper: https://arxiv.org/abs/2106.04156
-讲讲这篇论文：Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss
+Explain this paper: https://arxiv.org/abs/2607.03248
+Walk me through Unbiased Alignment for Large Language Models with Noisy Preferences
 ```
 
-or call the skill directly: `/paper-explainer 2106.04156` in Claude Code, `$paper-explainer 2106.04156` in Codex.
+or call the skill directly: `/paper-explainer 2607.03248` in Claude Code, `$paper-explainer 2607.03248` in Codex.
 
 The explainer is written in the language of your request: English for a request in English, Chinese for one in Chinese; an explicit "write it in English" wins. The skill is for understanding a paper thoroughly. For a question or two about a paper, a one-line summary, a peer review or group-meeting slides, just ask directly.
 
@@ -87,13 +93,13 @@ All explainers are kept in one folder, so the skill can find unfinished runs and
 Each paper gets a subfolder of its own:
 
 ```text
-2021 - SpeCL - Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss/
-├── 2106.04156v7.pdf                                   the paper, in the version explained
-├── HaoChen2021_SpectralContrastiveLoss_explainer.pdf  the explainer
+2026 - UDPO - Unbiased Alignment for Large Language Models with Noisy Preferences/
+├── 2607.03248v2.pdf                          the paper, in the version explained
+├── Wang2026_UnbiasedAlignment_explainer.pdf  the explainer
 ├── main.tex
-├── sections/                                          LaTeX sources, one file per section
-├── figures/                                           the paper's figures and the explainer's own
-└── checks/                                            the scripts behind every computed number
+├── sections/                                 LaTeX sources, one file per section
+├── figures/                                  the paper's figures and the explainer's own
+└── checks/                                   the scripts behind every computed number
 ```
 
 Asking again about a paper that already has a folder continues an unfinished run; for a finished one, you are asked whether to update it or redo it.
@@ -133,8 +139,8 @@ The scripts also work on their own; each prints its usage with `--help`.
 
 - A full run is long: many tool calls, several compiles and a review subagent. Longer papers take more time and tokens.
 - Downloads are treated as untrusted: each goes into its own folder, Python that reads them runs in isolated mode (`-I` or `-P`), EPS files are never converted, and the authors' code is never executed.
-- In Claude Code, the independent review uses a Claude subagent; no other model or API key is needed.
+- In Claude Code / Codex, the independent review uses a Claude / Codex subagent; no other model or API key is needed.
 
 ## License
 
-[MIT](LICENSE)
+MIT

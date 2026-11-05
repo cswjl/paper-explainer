@@ -1,8 +1,8 @@
 # paper-explainer
 
-[English](README.md) | **简体中文**
+English | **简体中文**
 
-一个 [Claude Code](https://claude.com/claude-code) skill：把一篇学术论文写成一份完整、简洁的讲解 PDF，用 XeLaTeX 排版，中文、英文都可以。有计算机本科基础的读者不用打开原文，就能掌握论文里的每个定理、每个证明和每个实验数字。OpenAI Codex 也能用。
+一个 Claude Code / Codex skill：把一篇学术论文写成一份完整、简洁的讲解 PDF，用 XeLaTeX 排版，中文、英文都可以。有计算机本科基础的读者不用打开原文，就能掌握论文里的每个定理、每个证明和每个实验数字。
 
 ![一份示例讲解中的 6 页](docs/images/example-zh.png)
 
@@ -27,9 +27,9 @@
 
 ## 环境要求
 
-- [Claude Code](https://claude.com/claude-code) 或 OpenAI Codex
-- [TeX Live](https://tug.org/texlive/)（需要 `xelatex`）。中文用 TeX Live 自带的 Fandol 字体，不用另装字体。
-- Python 3.10 及以上，以及 [PyMuPDF](https://pymupdf.readthedocs.io/) 和 [Pillow](https://python-pillow.org/)：
+- Claude Code 或 OpenAI Codex
+- TeX Live（需要 `xelatex`）。中文用 TeX Live 自带的 Fandol 字体，不用另装字体。
+- Python 3.10 及以上，以及 PyMuPDF 和 Pillow：
 
   ```bash
   python -m pip install pymupdf pillow
@@ -41,7 +41,13 @@
 
 ## 安装
 
-克隆到个人的 skills 目录，所有项目都能用：
+最简单的办法是让 AI agent 直接帮你安装，比如对 Claude Code 或 Codex 说：
+
+```text
+帮我安装这个 skill：https://github.com/cswjl/paper-explainer
+```
+
+也可以手动安装：把仓库克隆到个人的 skills 目录，所有项目都能用。
 
 ```bash
 git clone https://github.com/cswjl/paper-explainer.git ~/.claude/skills/paper-explainer
@@ -55,7 +61,7 @@ git clone https://github.com/cswjl/paper-explainer.git "$env:USERPROFILE\.claude
 
 只想在某个项目里用，就克隆到那个项目的 `.claude/skills/paper-explainer`。以后在这个目录里运行 `git pull` 就能更新。
 
-在 [Codex](https://developers.openai.com/codex/skills) 里用，就克隆到 Codex 查找个人 skill 的目录 `~/.agents/skills/paper-explainer`（PowerShell 里写成 `"$env:USERPROFILE\.agents\skills\paper-explainer"`）：
+在 Codex 里用，就克隆到 Codex 查找个人 skill 的目录 `~/.agents/skills/paper-explainer`（PowerShell 里写成 `"$env:USERPROFILE\.agents\skills\paper-explainer"`）：
 
 ```bash
 git clone https://github.com/cswjl/paper-explainer.git ~/.agents/skills/paper-explainer
@@ -68,11 +74,11 @@ git clone https://github.com/cswjl/paper-explainer.git ~/.agents/skills/paper-ex
 用自己的话提出要求，给 arXiv 链接或编号、论文标题、本地 PDF 都可以：
 
 ```text
-讲讲这篇论文：https://arxiv.org/abs/2106.04156
-Explain this paper: Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss
+讲讲这篇论文：https://arxiv.org/abs/2607.03248
+帮我读懂这篇论文：Unbiased Alignment for Large Language Models with Noisy Preferences
 ```
 
-也可以直接调用：Claude Code 里用 `/paper-explainer 2106.04156`，Codex 里用 `$paper-explainer 2106.04156`。
+也可以直接调用：Claude Code 里用 `/paper-explainer 2607.03248`，Codex 里用 `$paper-explainer 2607.03248`。
 
 讲解的语言跟你提要求时用的语言一致：用中文提就写中文讲解，用英文提就写英文讲解；明确说了“用英文写”之类的，以你说的为准。这个 skill 是用来彻底读懂一篇论文的；只想问一两个具体问题、要一句话总结、写审稿意见或者做组会 slides，直接提问就好。
 
@@ -87,9 +93,9 @@ Explain this paper: Provable Guarantees for Self-Supervised Deep Learning with S
 每篇论文一个子文件夹：
 
 ```text
-2021 - SpeCL - Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss/
-├── 2106.04156v7.pdf                     原论文（讲解依据的版本）
-├── HaoChen2021_谱对比损失_讲解.pdf      讲解
+2026 - UDPO - Unbiased Alignment for Large Language Models with Noisy Preferences/
+├── 2607.03248v2.pdf                     原论文（讲解依据的版本）
+├── Wang2026_无偏对齐_讲解.pdf           讲解
 ├── main.tex
 ├── sections/                            LaTeX 源文件，每节一个文件
 ├── figures/                             原文的图和讲解自己画的图
@@ -133,8 +139,8 @@ docs/images/                上面的示例图
 
 - 完整跑一遍耗时较长：要调用很多次工具、编译多次，还有一个复核用的 subagent。论文越长，花的时间和 token 越多。
 - 下载的文件一律当作不可信：每个下载放进单独的目录，读取它们的 Python 以隔离模式运行（`-I` 或 `-P`），不转换 EPS 文件，也不运行作者的代码。
-- 在 Claude Code 里，独立复核用的是 Claude subagent，不需要其他模型或 API key。
+- 在 Claude Code / Codex 里，独立复核用的是 Claude / Codex subagent，不需要其他模型或 API key。
 
 ## 许可证
 
-[MIT](LICENSE)
+MIT
