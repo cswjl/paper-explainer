@@ -2,7 +2,11 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-A [Claude Code](https://claude.com/claude-code) skill that turns an academic paper into a complete, concise explainer PDF, typeset with XeLaTeX, in Chinese or English. A reader with a CS undergraduate background can master every theorem, proof and experimental number in the paper without opening it.
+A [Claude Code](https://claude.com/claude-code) skill that turns an academic paper into a complete, concise explainer PDF, typeset with XeLaTeX, in Chinese or English. A reader with a CS undergraduate background can master every theorem, proof and experimental number in the paper without opening it. The skill also works in OpenAI Codex.
+
+![Six pages of an example explainer](docs/images/example-en.png)
+
+*Six of the 32 pages of an English explainer for an 18-page ICML 2026 paper, [Unbiased Alignment for Large Language Models with Noisy Preferences](https://arxiv.org/abs/2607.03248): the cover with the reading guide, the formula-free walkthrough, a theorem with its plain-words line and an explainer's note, a numerical check, a retyped table with the paper's own figure, and the errata.*
 
 ## What you get
 
@@ -23,7 +27,7 @@ Box colours show where the content comes from: blue and teal boxes hold the pape
 
 ## Requirements
 
-- [Claude Code](https://claude.com/claude-code)
+- [Claude Code](https://claude.com/claude-code) or OpenAI Codex
 - [TeX Live](https://tug.org/texlive/) with `xelatex`. Chinese text uses the Fandol fonts bundled with TeX Live, so no fonts need installing.
 - Python 3.10 or later, with [PyMuPDF](https://pymupdf.readthedocs.io/) and [Pillow](https://python-pillow.org/):
 
@@ -49,7 +53,15 @@ In Windows PowerShell:
 git clone https://github.com/cswjl/paper-explainer.git "$env:USERPROFILE\.claude\skills\paper-explainer"
 ```
 
-To use it in one project only, clone it into that project's `.claude/skills/paper-explainer` instead. Run `git pull` in the folder to update. If a running Claude Code session doesn't list the skill, start a new one.
+To use it in one project only, clone it into that project's `.claude/skills/paper-explainer` instead. Run `git pull` in the folder to update.
+
+For [Codex](https://developers.openai.com/codex/skills), clone it into `~/.agents/skills/paper-explainer`, the folder where Codex looks for personal skills (in PowerShell, `"$env:USERPROFILE\.agents\skills\paper-explainer"`):
+
+```bash
+git clone https://github.com/cswjl/paper-explainer.git ~/.agents/skills/paper-explainer
+```
+
+If a running session doesn't list the skill, start a new one.
 
 ## Usage
 
@@ -60,9 +72,9 @@ Explain this paper: https://arxiv.org/abs/2106.04156
 讲讲这篇论文：Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss
 ```
 
-or call the skill directly: `/paper-explainer 2106.04156`.
+or call the skill directly: `/paper-explainer 2106.04156` in Claude Code, `$paper-explainer 2106.04156` in Codex.
 
-The explainer is written in the language of your request: English for a request in English, Chinese for one in Chinese; an explicit "write it in English" wins. The skill is for understanding a paper thoroughly. For a question or two about a paper, a one-line summary, a peer review or group-meeting slides, just ask Claude.
+The explainer is written in the language of your request: English for a request in English, Chinese for one in Chinese; an explicit "write it in English" wins. The skill is for understanding a paper thoroughly. For a question or two about a paper, a one-line summary, a peer review or group-meeting slides, just ask directly.
 
 ### Where the files go
 
@@ -84,7 +96,7 @@ Each paper gets a subfolder of its own:
 └── checks/                                            the scripts behind every computed number
 ```
 
-Asking again about a paper that already has a folder continues an unfinished run; for a finished one, Claude asks whether to update it or redo it.
+Asking again about a paper that already has a folder continues an unfinished run; for a finished one, you are asked whether to update it or redo it.
 
 ## How it works
 
@@ -101,7 +113,7 @@ Asking again about a paper that already has a folder continues an unfinished run
 ## Repository layout
 
 ```text
-SKILL.md                    the workflow Claude follows
+SKILL.md                    the workflow the agent follows
 references/style-guide.md   writing and layout rules
 assets/template/            bilingual XeLaTeX template (\zhtrue for Chinese, \zhfalse for English)
 scripts/
@@ -112,6 +124,7 @@ scripts/
 ├── bib_list.py             list the references with the sections that cite them
 ├── compare_numbers.py      compare the numbers in two text spans, e.g. a table and its retyped copy
 └── render_pages.py         render PDF pages into contact sheets for visual review
+docs/images/                the example pages shown above
 ```
 
 The scripts also work on their own; each prints its usage with `--help`.
@@ -120,7 +133,7 @@ The scripts also work on their own; each prints its usage with `--help`.
 
 - A full run is long: many tool calls, several compiles and a review subagent. Longer papers take more time and tokens.
 - Downloads are treated as untrusted: each goes into its own folder, Python that reads them runs in isolated mode (`-I` or `-P`), EPS files are never converted, and the authors' code is never executed.
-- The independent review uses a Claude subagent; no other model or API key is needed.
+- In Claude Code, the independent review uses a Claude subagent; no other model or API key is needed.
 
 ## License
 

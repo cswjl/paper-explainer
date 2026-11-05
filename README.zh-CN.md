@@ -2,7 +2,11 @@
 
 [English](README.md) | **简体中文**
 
-一个 [Claude Code](https://claude.com/claude-code) skill：把一篇学术论文写成一份完整、简洁的讲解 PDF，用 XeLaTeX 排版，中文、英文都可以。有计算机本科基础的读者不用打开原文，就能掌握论文里的每个定理、每个证明和每个实验数字。
+一个 [Claude Code](https://claude.com/claude-code) skill：把一篇学术论文写成一份完整、简洁的讲解 PDF，用 XeLaTeX 排版，中文、英文都可以。有计算机本科基础的读者不用打开原文，就能掌握论文里的每个定理、每个证明和每个实验数字。OpenAI Codex 也能用。
+
+![一份示例讲解中的 6 页](docs/images/example-zh.png)
+
+示例：18 页的 ICML 2026 论文 [Unbiased Alignment for Large Language Models with Noisy Preferences](https://arxiv.org/abs/2607.03248) 的中文讲解共 32 页，上图是其中 6 页：封面和阅读说明、不用公式讲完整篇论文、定理及其“用大白话说”和讲解注、验算、实验结果和原文的图、勘误表。
 
 ## 特点
 
@@ -23,7 +27,7 @@
 
 ## 环境要求
 
-- [Claude Code](https://claude.com/claude-code)
+- [Claude Code](https://claude.com/claude-code) 或 OpenAI Codex
 - [TeX Live](https://tug.org/texlive/)（需要 `xelatex`）。中文用 TeX Live 自带的 Fandol 字体，不用另装字体。
 - Python 3.10 及以上，以及 [PyMuPDF](https://pymupdf.readthedocs.io/) 和 [Pillow](https://python-pillow.org/)：
 
@@ -49,7 +53,15 @@ Windows PowerShell：
 git clone https://github.com/cswjl/paper-explainer.git "$env:USERPROFILE\.claude\skills\paper-explainer"
 ```
 
-只想在某个项目里用，就克隆到那个项目的 `.claude/skills/paper-explainer`。以后在这个目录里运行 `git pull` 就能更新。如果正在运行的 Claude Code 会话里看不到这个 skill，新开一个会话。
+只想在某个项目里用，就克隆到那个项目的 `.claude/skills/paper-explainer`。以后在这个目录里运行 `git pull` 就能更新。
+
+在 [Codex](https://developers.openai.com/codex/skills) 里用，就克隆到 Codex 查找个人 skill 的目录 `~/.agents/skills/paper-explainer`（PowerShell 里写成 `"$env:USERPROFILE\.agents\skills\paper-explainer"`）：
+
+```bash
+git clone https://github.com/cswjl/paper-explainer.git ~/.agents/skills/paper-explainer
+```
+
+如果正在运行的会话里看不到这个 skill，新开一个会话。
 
 ## 使用
 
@@ -60,9 +72,9 @@ git clone https://github.com/cswjl/paper-explainer.git "$env:USERPROFILE\.claude
 Explain this paper: Provable Guarantees for Self-Supervised Deep Learning with Spectral Contrastive Loss
 ```
 
-也可以直接调用：`/paper-explainer 2106.04156`。
+也可以直接调用：Claude Code 里用 `/paper-explainer 2106.04156`，Codex 里用 `$paper-explainer 2106.04156`。
 
-讲解的语言跟你提要求时用的语言一致：用中文提就写中文讲解，用英文提就写英文讲解；明确说了“用英文写”之类的，以你说的为准。这个 skill 是用来彻底读懂一篇论文的；只想问一两个具体问题、要一句话总结、写审稿意见或者做组会 slides，直接问 Claude 就好。
+讲解的语言跟你提要求时用的语言一致：用中文提就写中文讲解，用英文提就写英文讲解；明确说了“用英文写”之类的，以你说的为准。这个 skill 是用来彻底读懂一篇论文的；只想问一两个具体问题、要一句话总结、写审稿意见或者做组会 slides，直接提问就好。
 
 ### 文件放在哪里
 
@@ -84,7 +96,7 @@ Explain this paper: Provable Guarantees for Self-Supervised Deep Learning with S
 └── checks/                              每个计算出来的数字背后的脚本
 ```
 
-对已经有文件夹的论文再提一次要求：没做完的会接着做；已经做完的，Claude 会问你是更新还是重做。
+对已经有文件夹的论文再提一次要求：没做完的会接着做；已经做完的，会先问你是更新还是重做。
 
 ## 工作流程
 
@@ -101,7 +113,7 @@ Explain this paper: Provable Guarantees for Self-Supervised Deep Learning with S
 ## 仓库结构
 
 ```text
-SKILL.md                    Claude 遵循的工作流程
+SKILL.md                    Agent 执行的工作流程
 references/style-guide.md   写作和排版规范
 assets/template/            中英双语 XeLaTeX 模板（\zhtrue 中文，\zhfalse 英文）
 scripts/
@@ -112,6 +124,7 @@ scripts/
 ├── bib_list.py             列出参考文献，以及引用它们的章节
 ├── compare_numbers.py      按顺序比对两段文字里的数字，比如原表和重排后的表
 └── render_pages.py         把 PDF 页面渲染成缩略图拼版，用来检查版面
+docs/images/                上面的示例图
 ```
 
 这些脚本也可以单独使用，加 `--help` 查看用法。
@@ -120,7 +133,7 @@ scripts/
 
 - 完整跑一遍耗时较长：要调用很多次工具、编译多次，还有一个复核用的 subagent。论文越长，花的时间和 token 越多。
 - 下载的文件一律当作不可信：每个下载放进单独的目录，读取它们的 Python 以隔离模式运行（`-I` 或 `-P`），不转换 EPS 文件，也不运行作者的代码。
-- 独立复核用的是 Claude subagent，不需要其他模型或 API key。
+- 在 Claude Code 里，独立复核用的是 Claude subagent，不需要其他模型或 API key。
 
 ## 许可证
 
